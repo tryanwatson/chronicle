@@ -1,6 +1,7 @@
 import Image from "next/image";
 import LogCard from "./ui/log-card";
 import prisma from "@/app/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 async function createEntry(formData: FormData) {
   "use server";
@@ -12,11 +13,10 @@ async function createEntry(formData: FormData) {
   await prisma.entries.create({
     data: { title, value },
   });
+  revalidatePath("/");
 }
 
 export default async function Home() {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
   const entries = await prisma.entries.findMany();
   return (
     <>
