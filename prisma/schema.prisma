@@ -9,23 +9,25 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model entries {
-  id         String    @id @default(uuid())
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_on DateTime? @default(now()) @db.Date
   created_at DateTime? @default(now()) @db.Timestamp(6)
   user_id    String?   @db.Uuid
-  title      String?
   value      String?
+  field_id   String?   @db.Uuid
+  fields     fields?   @relation(fields: [field_id], references: [id], onDelete: Cascade)
   users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model fields {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  user_id    String?  @db.Uuid
-  format     String?  @default("string")
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  user_id    String?   @db.Uuid
+  format     String?   @default("string")
   title      String?
-  users      users?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  entries    entries[]
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
