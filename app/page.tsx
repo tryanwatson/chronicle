@@ -2,6 +2,7 @@ import Image from "next/image";
 import LogCard from "./ui/log-card";
 import prisma from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
+export const dynamic = "force-dynamic";
 
 async function createEntry(formData: FormData) {
   "use server";
