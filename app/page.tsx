@@ -12,7 +12,7 @@ async function createEntry(formData: FormData) {
   const user_id = "123123123";
 
   await prisma.entries.create({
-    data: { title, value },
+    data: { title, value, user_id },
   });
   revalidatePath("/");
 }
@@ -21,7 +21,7 @@ export default async function Home() {
   const entries = await prisma.entries.findMany();
   return (
     <>
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center -mt-16 bg-gray-800">
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center pt-10 pb-10 bg-gray-800">
         <h1 className="text-4xl font-bold mb-8 font-[family-name:var(--font-geist-sans)] text-white">
           Chronicle
         </h1>
